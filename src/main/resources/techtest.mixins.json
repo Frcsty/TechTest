@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.github.frcsty.techtest.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "NbtCompoundAccessor"
+  ],
+  "client": [
+    "InGameHudMixin",
+    "MinecraftClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
