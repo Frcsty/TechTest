@@ -1,7 +1,6 @@
 package com.github.frcsty.techtest.mixin;
 
-import com.github.frcsty.techtest.information.NbtCompoundResolver;
-import com.github.frcsty.techtest.information.VariableHolder;
+import com.github.frcsty.techtest.holder.VariableHolder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
@@ -16,13 +15,13 @@ public final class MinecraftClientMixin {
     @Inject(method = "tick", at = @At("HEAD"))
     private void inject(CallbackInfo callbackInfo) {
         final Entity entity = MinecraftClient.getInstance().targetedEntity;
-
         VariableHolder.Companion.setTargetedEntity(entity);
+
         if (entity != null) {
             final NbtCompound compound = new NbtCompound();
 
             entity.writeNbt(compound);
-            VariableHolder.Companion.getCompoundMap().put(entity.getId(), new NbtCompoundResolver((NbtCompoundAccessor) compound));
+            VariableHolder.Companion.getCompoundMap().put(entity.getId(), compound);
         }
     }
 

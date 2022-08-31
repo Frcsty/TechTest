@@ -6,5 +6,5 @@ fun init() {
     // However, some things (like resources) may still be uninitialized.
     // Proceed with mild caution.
 
-    println("Hello Fabric world!")
+    println("Hello Fabric world! :)")
 }

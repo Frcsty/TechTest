@@ -1,45 +1,40 @@
 package com.github.frcsty.techtest.display
 
-import com.github.frcsty.techtest.display.node.GraphNode
-import com.github.frcsty.techtest.information.VariableHolder
+import com.github.frcsty.techtest.display.construct.NbtTreeConstructor
+import com.github.frcsty.techtest.display.texture.TextureMap
+import com.github.frcsty.techtest.holder.VariableHolder
 import gg.essential.elementa.ElementaVersion
 import gg.essential.elementa.WindowScreen
 import gg.essential.elementa.components.TreeGraphComponent
 import gg.essential.elementa.components.TreeGraphStyle
-import gg.essential.elementa.components.UIImage
-import gg.essential.elementa.constraints.CenterConstraint
 import gg.essential.elementa.dsl.childOf
 import gg.essential.elementa.dsl.constrain
 import gg.essential.elementa.dsl.pixels
 import net.minecraft.client.MinecraftClient
 import net.minecraft.entity.Entity
 import net.minecraft.util.Identifier
-import java.util.concurrent.CompletableFuture
-import javax.imageio.ImageIO
 
 class EntityInformationDisplay(
     val currentEntity: Entity
 ) : WindowScreen(ElementaVersion.V2) {
 
-    init {
-        val resource = MinecraftClient.getInstance().resourceManager.getResource(
-            Identifier(
-                "techtest",
-                "textures/item/spawn_egg_2.png"
-            )
+    private val resource = MinecraftClient.getInstance().resourceManager.getResource(
+        Identifier(
+            "minecraft",
+            "textures/item/spawn_egg.png"
         )
+    )
+    private val overlayResource = MinecraftClient.getInstance().resourceManager.getResource(
+        Identifier(
+            "minecraft",
+            "textures/item/spawn_egg_overlay.png"
+        )
+    )
 
+    init {
         val compound = VariableHolder.compoundMap[currentEntity.id]
         if (compound != null) {
-            val root = GraphNode("", window).withChildren {
-                compound.nodeStructure.keys.forEach { primary ->
-                    add(GraphNode(primary, window).withChildren {
-                        compound.nodeStructure[primary]?.forEach {
-                            add(GraphNode(it, window))
-                        }
-                    })
-                }
-            }
+            val root = NbtTreeConstructor(compound, window).node
 
             TreeGraphComponent(
                 root, TreeGraphStyle(
@@ -53,12 +48,13 @@ class EntityInformationDisplay(
             } childOf window
         }
 
-        UIImage(imageFuture = CompletableFuture.supplyAsync {
-            ImageIO.read(resource.inputStream)
-        }).constrain {
-            x = CenterConstraint()
-            y = CenterConstraint()
-        } childOf window
+        val textureMap: TextureMap? = TextureMap.forType(currentEntity.type.untranslatedName)
+        if (textureMap != null) {
+            println("First: ${textureMap.first}, Second: ${textureMap.second}")
+            println(resource)
+            println(overlayResource)
+            // Recolor the initial images, retrieve as a texture and somehow display it instead of the crosshair
+        }
     }
 
 }

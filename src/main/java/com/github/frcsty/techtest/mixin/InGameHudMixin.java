@@ -1,7 +1,7 @@
 package com.github.frcsty.techtest.mixin;
 
 import com.github.frcsty.techtest.display.EntityInformationDisplay;
-import com.github.frcsty.techtest.information.VariableHolder;
+import com.github.frcsty.techtest.holder.VariableHolder;
 import gg.essential.universal.UMatrixStack;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
