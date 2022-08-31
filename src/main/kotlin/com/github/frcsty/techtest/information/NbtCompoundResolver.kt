@@ -1,29 +1,43 @@
 package com.github.frcsty.techtest.information
 
-import net.minecraft.nbt.NbtElement
+import com.github.frcsty.techtest.mixin.NbtCompoundAccessor
+import net.minecraft.nbt.NbtCompound
+import java.lang.ClassCastException
 
-class NbtCompoundResolver(entries: Map<String, NbtElement>) {
+class NbtCompoundResolver(compound: NbtCompoundAccessor) {
 
-    private val nodeStructure = mutableMapOf<String, String>()
+    val nodeStructure = mutableMapOf<String, List<String>>()
 
     init {
-        val iterator = entries.keys.iterator()
+        val iterator = compound.entries.keys.iterator()
 
         while (iterator.hasNext()) {
             val key = iterator.next()
-            val element = entries[key] ?: continue
+            val element = compound.entries[key] ?: continue
 
-            if (element.asString().length > 2) continue
-            nodeStructure[key] = element.asString()
+            try {
+                element as NbtCompoundAccessor
+                val children = mutableListOf<String>()
+                val iterator = element.entries.keys.iterator()
+
+                while (iterator.hasNext()) {
+                    val key = iterator.next()
+                    val element = element.entries[key] ?: continue
+
+                    children.add(element.asString())
+                }
+
+                nodeStructure[key] = children
+            } catch (_: ClassCastException) {
+                nodeStructure[key] = listOf(element.asString())
+            }
         }
     }
 
-    fun keys(): Set<String> {
-        return nodeStructure.keys
-    }
+}
 
-    fun children(key: String): String {
-        return nodeStructure[key].orEmpty()
-    }
-
+class CompoundNode(
+    private val text: String,
+    private val indentation: Int
+) {
 }

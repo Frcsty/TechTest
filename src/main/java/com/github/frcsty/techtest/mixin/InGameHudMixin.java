@@ -3,7 +3,6 @@ package com.github.frcsty.techtest.mixin;
 import com.github.frcsty.techtest.display.EntityInformationDisplay;
 import com.github.frcsty.techtest.information.VariableHolder;
 import gg.essential.universal.UMatrixStack;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
@@ -22,10 +21,9 @@ public final class InGameHudMixin {
         final Entity entity = VariableHolder.Companion.getTargetedEntity();
         if (entity == null) return;
         if (this.display == null || this.display.getCurrentEntity().getId() != entity.getId()) {
-            this.display = new EntityInformationDisplay(entity, matrixStack);
+            this.display = new EntityInformationDisplay(entity);
         }
 
-        //MinecraftClient.getInstance().setScreen(display);
         this.display.getWindow().draw(new UMatrixStack(matrixStack));
     }
 

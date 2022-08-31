@@ -22,7 +22,7 @@ public final class MinecraftClientMixin {
             final NbtCompound compound = new NbtCompound();
 
             entity.writeNbt(compound);
-            VariableHolder.Companion.getCompoundMap().put(entity.getId(), new NbtCompoundResolver(((NbtCompoundAccessor) compound).getEntries()));
+            VariableHolder.Companion.getCompoundMap().put(entity.getId(), new NbtCompoundResolver((NbtCompoundAccessor) compound));
         }
     }
 
