@@ -25,6 +25,9 @@ dependencies {
     // Elementa implementation
     modImplementation(include("gg.essential:elementa-${project.minecraft_version}-${project.mod_platform}:${project.build_version}"))
 
+    // Fabric API. This is technically optional, but you probably want it anyway.
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
     modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 }
 
