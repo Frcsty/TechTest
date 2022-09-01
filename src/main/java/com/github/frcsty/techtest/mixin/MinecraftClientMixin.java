@@ -1,5 +1,6 @@
 package com.github.frcsty.techtest.mixin;
 
+import com.github.frcsty.techtest.display.EntityInformationDisplay;
 import com.github.frcsty.techtest.holder.VariableHolder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
@@ -18,10 +19,12 @@ public final class MinecraftClientMixin {
         VariableHolder.Companion.setTargetedEntity(entity);
 
         if (entity != null) {
-            final NbtCompound compound = new NbtCompound();
+            if (VariableHolder.Companion.getDisplay() == null || VariableHolder.Companion.getDisplay().getCurrentEntity().getId() != entity.getId()) {
+                final NbtCompound compound = new NbtCompound();
+                entity.writeNbt(compound);
 
-            entity.writeNbt(compound);
-            VariableHolder.Companion.getCompoundMap().put(entity.getId(), compound);
+                VariableHolder.Companion.setDisplay(new EntityInformationDisplay(entity, compound));
+            }
         }
     }
 
